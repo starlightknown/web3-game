@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackStack - Find Your Perfect Hackathon Team</title>
+    <link rel="stylesheet" href="hackstack.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="nav-content">
+                <div class="logo">
+                    <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="url(#logo-gradient)"/>
+                        <path d="M16 8L22 12V20L16 24L10 20V12L16 8Z" fill="white"/>
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
+                                <stop offset="0%" stop-color="#3770FF"/>
+                                <stop offset="100%" stop-color="#2563EB"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">HackStack</span>
+                    <span class="powered-by">powered by Devfolio</span>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn active" id="swipe-tab" onclick="showTab('swipe')">
+                        <span class="icon">🔥</span>
+                        <span>Discover</span>
+                    </button>
+                    <button class="nav-btn" id="matches-tab" onclick="showTab('matches')">
+                        <span class="icon">💬</span>
+                        <span>Matches</span>
+                        <span class="badge" id="match-badge">0</span>
+                    </button>
+                    <button class="nav-btn" id="profile-tab" onclick="showTab('profile')">
+                        <span class="icon">👤</span>
+                        <span>Profile</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Swipe View -->
+            <div id="swipe-view" class="view active">
+                <div class="filters-bar">
+                    <div class="filter-wrapper">
+                        <select id="role-filter" class="filter-select">
+                            <option value="all">All Roles</option>
+                            <option value="frontend">Frontend Developer</option>
+                            <option value="backend">Backend Developer</option>
+                            <option value="fullstack">Full Stack Developer</option>
+                            <option value="designer">UI/UX Designer</option>
+                            <option value="ml">ML/AI Engineer</option>
+                            <option value="blockchain">Blockchain Developer</option>
+                            <option value="mobile">Mobile Developer</option>
+                            <option value="data">Data Scientist</option>
+                        </select>
+                    </div>
+                    <div class="filter-wrapper">
+                        <select id="availability-filter" class="filter-select">
+                            <option value="all">All Availability</option>
+                            <option value="weekend">Weekend Only</option>
+                            <option value="fulltime">Full Time Available</option>
+                            <option value="flexible">Flexible Schedule</option>
+                        </select>
+                    </div>
+                    <div class="filter-wrapper">
+                        <select id="location-filter" class="filter-select" onchange="applyFilters()">
+                            <option value="all">All Locations</option>
+                            <option value="nearby">Near You (India)</option>
+                            <option value="india">India</option>
+                            <option value="usa">United States</option>
+                            <option value="europe">Europe</option>
+                            <option value="asia">Asia</option>
+                        </select>
+                    </div>
+                    <div class="filter-wrapper">
+                        <select id="hackathon-filter" class="filter-select" onchange="applyFilters()">
+                            <option value="all">All Hackathons</option>
+                            <option value="ethindia">ETHIndia 2024</option>
+                            <option value="devfolio">Devfolio Events</option>
+                            <option value="hackmit">HackMIT</option>
+                            <option value="ethglobal">ETHGlobal</option>
+                            <option value="calhacks">CalHacks</option>
+                        </select>
+                    </div>
+                    <button class="refresh-btn" id="refresh-profiles" onclick="fetchDevfolioProfiles()">
+                        <span class="icon">🔄</span>
+                        <span>Fetch Profiles</span>
+                    </button>
+                </div>
+                
+                <div class="filters-and-cards">
+
+                <div class="card-container" id="card-container">
+                    <!-- Cards will be dynamically inserted here -->
+                    <div class="no-more-cards hidden" id="no-more-cards">
+                        <div class="empty-state">
+                            <span class="empty-icon">🎉</span>
+                            <h2>No More Developers!</h2>
+                            <p>You've seen everyone. Check back later for new profiles.</p>
+                            <button class="btn-primary" onclick="resetCards()">Start Over</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons" id="action-buttons">
+                    <button class="action-btn pass-btn" onclick="swipe('left')" title="Pass">
+                        <span class="icon">✕</span>
+                    </button>
+                    <button class="action-btn super-btn" onclick="superLike()" title="Super Like">
+                        <span class="icon">⭐</span>
+                    </button>
+                    <button class="action-btn like-btn" onclick="swipe('right')" title="Like">
+                        <span class="icon">❤️</span>
+                    </button>
+                </div>
+                </div>
+            </div>
+
+            <!-- Matches View -->
+            <div id="matches-view" class="view">
+                <div class="view-header">
+                    <h2>Your Matches</h2>
+                    <p class="subtitle">Start chatting with your potential teammates!</p>
+                </div>
+                
+                <div class="matches-grid" id="matches-grid">
+                    <div class="empty-state">
+                        <span class="empty-icon">💫</span>
+                        <h3>No matches yet</h3>
+                        <p>Start swiping to find your perfect teammates!</p>
+                        <button class="btn-primary" onclick="showTab('swipe')">Start Swiping</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile View -->
+            <div id="profile-view" class="view">
+                <div class="view-header">
+                    <h2>Your Profile</h2>
+                    <p class="subtitle">This is how others see you</p>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">👨‍💻</div>
+                        <div class="profile-info">
+                            <h3>You</h3>
+                            <p>Full Stack Developer</p>
+                            <div class="devfolio-badge">
+                                <span class="badge-icon">🏆</span>
+                                <span>Devfolio Connected</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h4>Skills</h4>
+                        <div class="skills-display">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">TypeScript</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h4>Interests</h4>
+                        <div class="interests-display">
+                            <span class="interest-tag">Web3</span>
+                            <span class="interest-tag">AI/ML</span>
+                            <span class="interest-tag">Mobile Dev</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h4>Availability</h4>
+                        <p>📅 Available for Weekend Hackathons</p>
+                    </div>
+
+                    <div class="profile-section">
+                        <h4>Past Hackathons</h4>
+                        <div class="hackathon-list">
+                            <div class="hackathon-item">
+                                <span class="hackathon-icon">🏅</span>
+                                <div>
+                                    <strong>ETHGlobal 2024</strong>
+                                    <p>1st Place - Best DeFi Project</p>
+                                </div>
+                            </div>
+                            <div class="hackathon-item">
+                                <span class="hackathon-icon">🥈</span>
+                                <div>
+                                    <strong>HackMIT 2024</strong>
+                                    <p>2nd Place - AI Track</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-secondary btn-block">Edit Profile</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Match Modal -->
+    <div id="match-modal" class="modal hidden">
+        <div class="modal-content match-animation">
+            <div class="match-header">
+                <h2>🎉 It's a Match! 🎉</h2>
+                <p>You and <span id="match-name"></span> liked each other!</p>
+            </div>
+            <div class="match-profiles">
+                <div class="match-avatar">👨‍💻</div>
+                <div class="match-heart">❤️</div>
+                <div class="match-avatar" id="matched-avatar"></div>
+            </div>
+            <div class="match-actions">
+                <button class="btn-secondary" onclick="closeMatchModal()">Keep Swiping</button>
+                <button class="btn-primary" onclick="openChat()">Send Message</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chat-modal" class="modal hidden">
+        <div class="modal-content chat-modal-content">
+            <div class="chat-header">
+                <button class="back-btn" onclick="closeChatModal()">←</button>
+                <div class="chat-user-info">
+                    <div class="chat-avatar" id="chat-avatar"></div>
+                    <div>
+                        <h4 id="chat-name"></h4>
+                        <p class="online-status">● Online</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be inserted here -->
+            </div>
+            <div class="chat-input-container">
+                <input 
+                    type="text" 
+                    class="chat-input" 
+                    id="chat-input" 
+                    placeholder="Type a message..."
+                    onkeypress="handleChatKeypress(event)"
+                >
+                <button class="send-btn" onclick="sendMessage()">
+                    <span>➤</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="hackstack.js"></script>
+</body>
+</html>
+
