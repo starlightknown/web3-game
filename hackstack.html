@@ -7,38 +7,51 @@
     <link rel="stylesheet" href="hackstack.css">
 </head>
 <body>
+    <!-- Floating Decorative Shapes -->
+    <div class="shapes-container">
+        <div class="shape shape-circle"></div>
+        <div class="shape shape-sun"></div>
+        <div class="shape shape-arc"></div>
+        <div class="shape shape-triangle"></div>
+        <div class="shape shape-square"></div>
+        <div class="shape shape-blob"></div>
+    </div>
+    
     <div class="app-container">
         <!-- Navigation Bar -->
         <nav class="navbar">
             <div class="nav-content">
-                <div class="logo">
-                    <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <rect width="32" height="32" rx="8" fill="url(#logo-gradient)"/>
-                        <path d="M16 8L22 12V20L16 24L10 20V12L16 8Z" fill="white"/>
-                        <defs>
-                            <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
-                                <stop offset="0%" stop-color="#3770FF"/>
-                                <stop offset="100%" stop-color="#2563EB"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <span class="logo-text">HackStack</span>
-                    <span class="powered-by">powered by Devfolio</span>
-                </div>
-                <div class="nav-buttons">
-                    <button class="nav-btn active" id="swipe-tab" onclick="showTab('swipe')">
-                        <span class="icon">🔥</span>
-                        <span>Discover</span>
-                    </button>
-                    <button class="nav-btn" id="matches-tab" onclick="showTab('matches')">
-                        <span class="icon">💬</span>
-                        <span>Matches</span>
-                        <span class="badge" id="match-badge">0</span>
-                    </button>
-                    <button class="nav-btn" id="profile-tab" onclick="showTab('profile')">
-                        <span class="icon">👤</span>
-                        <span>Profile</span>
-                    </button>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="logo">
+                        <svg class="logo-icon" width="36" height="36" viewBox="0 0 36 36" fill="none">
+                            <rect width="36" height="36" rx="10" fill="url(#logo-gradient)"/>
+                            <path d="M18 10L24 14V22L18 26L12 22V14L18 10Z" fill="white"/>
+                            <defs>
+                                <linearGradient id="logo-gradient" x1="0" y1="0" x2="36" y2="36">
+                                    <stop offset="0%" stop-color="#3770FF"/>
+                                    <stop offset="100%" stop-color="#2563EB"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span class="logo-text">HackStack</span>
+                        <span class="powered-by">by Devfolio</span>
+                    </div>
+                    
+                    <div class="nav-buttons">
+                        <button class="nav-btn active" id="swipe-tab" onclick="showTab('swipe')">
+                            <span class="icon">🔥</span>
+                            <span>Discover</span>
+                        </button>
+                        <button class="nav-btn" id="matches-tab" onclick="showTab('matches')">
+                            <span class="icon">💬</span>
+                            <span>Matches</span>
+                            <span class="badge" id="match-badge">0</span>
+                        </button>
+                        <button class="nav-btn" id="profile-tab" onclick="showTab('profile')">
+                            <span class="icon">👤</span>
+                            <span>Profile</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
